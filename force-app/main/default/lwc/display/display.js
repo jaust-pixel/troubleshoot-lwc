@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : Jonah Austin (OpFocus)
+ * @group             : OpFocus
+ * @last modified on  : 2022-08-07
+ * @last modified by  : Jonah Austin (OpFocus)
+**/
 import { LightningElement } from 'lwc';
 
 export default class Display extends LightningElement {
@@ -12,7 +19,7 @@ export default class Display extends LightningElement {
   }
   
   handleAugmentorChange(event) {
-    this.augmentor = event.target.value;
+    this.augmentor = parseInt(event.target.value);
   }
 
   handleIncrement(event) {
