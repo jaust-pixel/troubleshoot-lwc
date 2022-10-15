@@ -15,6 +15,7 @@ public with sharing class UnitOfWorkTest {
             new Schema.SObjectType[] {
                 Account.SObjectType,
                 Contact.SObjectType,
+                Campaign.SObjectType,
                 Note.SObjectType
             }
         );
@@ -30,11 +31,22 @@ public with sharing class UnitOfWorkTest {
             }
         }
 
+        for (Integer campInd = 0; campInd < 100; campInd++) {
+            Campaign camp = new Campaign(Name = 'UoW Test Campaign ' + campInd);
+            if (campInd < 50) {
+                uow.registerNew(camp);
+            } else {
+                Campaign childCamp = new Campaign(Name = 'UoW Child Campaign ' + campInd);
+                uow.registerNew(childCamp, Campaign.ParentId, camp);
+            }
+        }
+
         uow.commitWork();
 
         System.assertEquals(100, [SELECT Id FROM Account].size());
         System.assertEquals(500, [SELECT Id FROM Contact].size());
         System.assertEquals(500, [SELECT Id FROM Note].size());
+        System.assertEquals(100, [SELECT COUNT() FROM Campaign]);
     }
 
 }
